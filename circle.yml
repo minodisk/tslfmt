@@ -6,4 +6,10 @@ dependencies:
   pre:
     - npm install -g typings
   post:
+    - typings install
     - npm build
+
+test:
+  override:
+    - npm test
+
