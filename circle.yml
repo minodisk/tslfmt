@@ -3,13 +3,6 @@ machine:
     version: 6.3.1
 
 dependencies:
-  pre:
-    - npm install -g typings
   post:
-    - typings install
+    - ./node_modules/.bin/typings install
     - npm build
-
-test:
-  override:
-    - npm test
-
