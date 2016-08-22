@@ -1,14 +1,13 @@
 {
   "compilerOptions": {
-    "rootDir": "./src",
-    "outDir": "./lib",
     "moduleResolution": "node",
     "noImplicitAny": true,
     "sourceMap": true
   },
   "files": [
     "typings/index.d.ts",
-    "src/index.ts"
+    "lib/index.ts",
+    "test/quotemark_test.ts"
   ],
   "exclude": [
     "node_modules"

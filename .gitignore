@@ -39,5 +39,6 @@ jspm_packages
 # TypeScript
 typings
 
-# Product
-lib
+# Products
+*.js
+*.js.map
