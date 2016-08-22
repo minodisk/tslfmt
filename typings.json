@@ -1,0 +1,10 @@
+{
+  "name": "tslfmt",
+  "dependencies": {
+    "glob": "registry:npm/glob#6.0.0+20160723033700",
+    "minimist": "registry:npm/minimist#1.0.0+20160723033700"
+  },
+  "globalDependencies": {
+    "node": "registry:dt/node#6.0.0+20160818175514"
+  }
+}

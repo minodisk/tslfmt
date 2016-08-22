@@ -1,0 +1,33 @@
+{
+  "name": "tslfmt",
+  "version": "0.1.0",
+  "description": "Formatter for TypeScript fixes warning from tsling",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/minodisk/tslfmt.git"
+  },
+  "keywords": [
+    "formatter",
+    "typescript",
+    "tslint"
+  ],
+  "author": "Daisuke Mino",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/minodisk/tslfmt/issues"
+  },
+  "homepage": "https://github.com/minodisk/tslfmt#readme",
+  "dependencies": {
+    "glob": "^7.0.5",
+    "minimist": "^1.2.0"
+  },
+  "devDependencies": {
+    "tslint": "^3.14.0",
+    "typescript": "^1.8.10"
+  }
+}
