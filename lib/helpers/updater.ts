@@ -1,12 +1,7 @@
 import { RuleFailure } from "tslint/lib/language/rule/rule";
 import {
-  SyntaxKind,
   Node,
-  ScriptTarget,
   SourceFile,
-  createSourceFile,
-  forEachChild,
-  LineAndCharacter,
 } from "typescript";
 
 import {findNode} from "./finder";
@@ -26,7 +21,11 @@ export function updateWithText(sourceFile: SourceFile, ruleFailure: RuleFailure,
   return updateText(sourceFile, start, end, newText);
 }
 
-export function updateWithLineAndCharacter(sourceFile: SourceFile, ruleFailure: RuleFailure, cb: (oldText: string) => string) {
+export function updateWithLineAndCharacter(
+  sourceFile: SourceFile,
+  ruleFailure: RuleFailure,
+  cb: (oldText: string) => string
+) {
   const fullText = sourceFile.getFullText();
   const start = getPositionFromLineAndCharacter(sourceFile, ruleFailure.getStartPosition().getLineAndCharacter());
   const end = getPositionFromLineAndCharacter(sourceFile, ruleFailure.getEndPosition().getLineAndCharacter());
@@ -39,10 +38,10 @@ export function updateText(sourceFile: SourceFile, start: number, end: number, n
   const pre = fullText.substring(0, start);
   const post = fullText.substring(end);
   return sourceFile.update(`${pre}${newText}${post}`, {
+    newLength: newText.length,
     span: {
       start,
       length: end - start,
     },
-    newLength: newText.length,
   });
 }

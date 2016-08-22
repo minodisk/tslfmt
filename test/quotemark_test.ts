@@ -46,7 +46,7 @@ let bar = "bar";`,
               "double",
             ],
           },
-        }).getFullText()
+        }).getFullText();
         assert.equal(actual, expected);
       });
     });

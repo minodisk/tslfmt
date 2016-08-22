@@ -1,22 +1,20 @@
 import { RuleFailure } from "tslint/lib/language/rule/rule";
 import {
-  SyntaxKind,
   Node,
-  ScriptTarget,
   SourceFile,
-  createSourceFile,
   forEachChild,
-  LineAndCharacter,
 } from "typescript";
 
-import {warn, toPosString} from "./logger";
+import {toPosString, warn} from "./logger";
 
 export function findNode(sourceFile: SourceFile, ruleFailure: RuleFailure) {
   const start = ruleFailure.getStartPosition().getPosition();
   const end = ruleFailure.getEndPosition().getPosition();
   let found: Node;
   forEachChild(sourceFile, (node) => {
-    if (found != null) return;
+    if (found != null) {
+      return;
+    }
     found = findChild(node, start, end);
   });
 

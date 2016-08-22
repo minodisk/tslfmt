@@ -14,6 +14,7 @@ import {
   updateWithLineAndCharacter,
 } from "../helpers/updater";
 import * as orderedImports from "./ordered-imports";
+import * as quotemark from "./quotemark";
 
 export interface Context {
   formatters: any;
@@ -40,7 +41,7 @@ export const layers = [
     //   }
     // },
 
-    'ordered-imports': {
+    "ordered-imports": {
       priority: 0.0,
       format: orderedImports.format,
     },
@@ -49,16 +50,7 @@ export const layers = [
   {
     "quotemark": {
       priority: 1.0,
-      format: (sourceFile: SourceFile, ruleFailure: RuleFailure, context: Context) => {
-        const [{}, wrong, correct] = ruleFailure.getFailure().match(/^(['"`])\s+should\s+be\s+(['"`])$/);
-        if (!wrong || !correct) {
-          return;
-        }
-        return updateWithNode(sourceFile, ruleFailure, (node) => {
-          const oldText = node.getFullText();
-          return oldText.replace(/['"`]([\s\S]*)['"`]/, `${correct}$1${correct}`);
-        });
-      },
+      format: quotemark.format,
     },
 
     "semicolon": {
