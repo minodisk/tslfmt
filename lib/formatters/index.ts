@@ -15,6 +15,10 @@ import {
 } from "../helpers/updater";
 import * as orderedImports from "./ordered-imports";
 import * as quotemark from "./quotemark";
+import * as semicolon from "./semicolon";
+import * as trailingComma from "./trailing-comma";
+import * as noConsecutiveBlankLines from './no-consecutive-blank-lines'
+import * as noUnusedVariable from './no-unused-variable'
 
 export interface Context {
   formatters: any;
@@ -23,22 +27,9 @@ export interface Context {
 
 export const layers = [
   {
-    // "no-unused-variable': {
+    // "no-unused-variable": {
     //   priority: 1.0,
-    //   format: (sourceFile, ruleFailure) => {
-    //     const node = findNode(sourceFile, ruleFailure)
-    //     const target = node.parent
-    //     const start = target.getFullStart()
-    //     let end = target.getEnd()
-    //     const parent = target.parent
-    //     console.log(node.kind, target.kind, parent.kind, punctuationPart(node.kind))
-    //     const post = parent.getFullText().substring(end - parent.getFullStart())
-    //     const matched = post.match(/^\s*[,;]/)
-    //     if (matched != null) {
-    //       end = end + matched[0].length
-    //     }
-    //     return updateText(sourceFile, start, end, '')
-    //   }
+    //   format: noUnusedVariable.format,
     // },
 
     "ordered-imports": {
@@ -55,33 +46,19 @@ export const layers = [
 
     "semicolon": {
       priority: 0.5,
-      format: (sourceFile: SourceFile, ruleFailure: RuleFailure, context: Context) => {
-        return updateWithNode(sourceFile, ruleFailure, (node) => {
-          const oldText = node.getFullText();
-          return `${oldText};`;
-        });
-      },
+      format: semicolon.format,
     },
 
     "trailing-comma": {
       priority: 0.5,
-      format: (sourceFile: SourceFile, ruleFailure: RuleFailure) => {
-        return updateWithNode(sourceFile, ruleFailure, (node) => {
-          const oldText = node.getFullText();
-          return `${oldText},`;
-        });
-      },
+      format: trailingComma.format,
     },
   },
 
   {
     "no-consecutive-blank-lines": {
       priority: 0.2,
-      format: (sourceFile: SourceFile, ruleFailure: RuleFailure, context: Context) => {
-        return updateWithLineAndCharacter(sourceFile, ruleFailure, (text) => {
-          return text.replace(/\n+/, "");
-        });
-      },
+      format: noConsecutiveBlankLines.format,
     },
   },
 

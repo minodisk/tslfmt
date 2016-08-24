@@ -3,11 +3,58 @@ import {
   Node,
   SourceFile,
   forEachChild,
+  SyntaxKind,
 } from "typescript";
 
 import {toPosString, warn} from "./logger";
 
-export function findNode(sourceFile: SourceFile, ruleFailure: RuleFailure) {
+const SyntaxKindNames: string[] = (() => {
+  const map: string[] = [];
+  for (let key in SyntaxKind) {
+    map[(SyntaxKind as any)[key]] = key
+  }
+  return map
+})();
+
+export function getSyntaxKindName(kind: number): string {
+  return SyntaxKindNames[kind];
+}
+
+export function forEachNode(sourceFile: SourceFile, cb: (node: Node) => boolean) {
+  let isContinue = true;
+  forEachChild(sourceFile, (node) => {
+    if (!isContinue) {
+      return;
+    }
+    isContinue = isContinue && cb(node);
+    if (!isContinue) {
+      return;
+    }
+    isContinue = isContinue && walk(node, 0, cb);
+  });
+}
+
+export function walk(node: Node, depth: number, cb: (node: Node, depth: number) => boolean): boolean {
+  const children = node.getChildren();
+  let isContinue = true;
+  for (let i = 0; i < children.length; i++) {
+    const child = children[i];
+    depth++;
+
+    isContinue = isContinue && cb(child, depth);
+    if (!isContinue) {
+      return isContinue;
+    }
+
+    isContinue = walk(child, depth, cb);
+    if (!isContinue) {
+      return isContinue;
+    }
+  }
+  return isContinue;
+}
+
+export function findNode(sourceFile: SourceFile, ruleFailure: RuleFailure): Node {
   const start = ruleFailure.getStartPosition().getPosition();
   const end = ruleFailure.getEndPosition().getPosition();
   let found: Node;
@@ -19,7 +66,9 @@ export function findNode(sourceFile: SourceFile, ruleFailure: RuleFailure) {
   });
 
   if (found == null) {
-    warn(ruleFailure, `can't find node from ${toPosString(ruleFailure.getStartPosition().getLineAndCharacter())} to ${toPosString(ruleFailure.getEndPosition().getLineAndCharacter())} for`);
+    const s = toPosString(ruleFailure.getStartPosition().getLineAndCharacter());
+    const e = toPosString(ruleFailure.getEndPosition().getLineAndCharacter());
+    warn(ruleFailure, `can't find node from ${s} to ${e} for`);
   }
 
   return found;
